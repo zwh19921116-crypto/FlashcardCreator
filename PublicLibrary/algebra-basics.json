@@ -1,0 +1,48 @@
+{
+  "title": "Algebra Basics",
+  "subject": "Mathematics",
+  "yearLevel": "Year 7",
+  "description": "Core algebra concepts for beginners",
+  "cards": [
+    {
+      "id": 1,
+      "front": "What is a variable?",
+      "back": "A letter or symbol that represents a number."
+    },
+    {
+      "id": 2,
+      "front": "What is an expression?",
+      "back": "A mathematical phrase with numbers, variables, and operations."
+    },
+    {
+      "id": 3,
+      "front": "What is an equation?",
+      "back": "A statement showing two expressions are equal."
+    },
+    {
+      "id": 4,
+      "front": "What are like terms?",
+      "back": "Terms that have the same variable part, such as 3x and -2x."
+    },
+    {
+      "id": 5,
+      "front": "Simplify: 4x + 3x",
+      "back": "7x"
+    },
+    {
+      "id": 6,
+      "front": "Substitute x = 5 into x + 2.",
+      "back": "7"
+    },
+    {
+      "id": 7,
+      "front": "Solve: x + 4 = 10",
+      "back": "x = 6"
+    },
+    {
+      "id": 8,
+      "front": "Solve: 3x = 21",
+      "back": "x = 7"
+    }
+  ]
+}

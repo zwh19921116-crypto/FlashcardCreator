@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EdgEducate Flashcard Creator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <div class="brand-mark" aria-hidden="true">EE</div>
+      <div>
+        <h1>EdgEducate Flashcard Creator</h1>
+        <p class="subhead">Interactive flashcards for primary, secondary, and VCE learners</p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="main-nav" aria-label="Primary navigation">
+    <button class="nav-btn active" data-section="dashboard">Dashboard</button>
+    <button class="nav-btn" data-section="library">Public Library</button>
+    <button class="nav-btn" data-section="myFlashcards">My Flashcards</button>
+    <button class="nav-btn" data-section="create">Create Flashcards</button>
+    <button class="nav-btn" data-section="import">Import JSON</button>
+    <button class="nav-btn" data-section="export">Export JSON</button>
+    <button class="nav-btn" data-section="statistics">Statistics</button>
+    <button class="nav-btn" data-section="settings">Settings</button>
+  </nav>
+
+  <main class="container">
+    <section id="dashboard" class="panel active" aria-labelledby="dashboard-title">
+      <h2 id="dashboard-title">Dashboard</h2>
+      <div class="stat-grid" id="dashboardStats"></div>
+      <div class="card panel-soft">
+        <h3>Quick Start</h3>
+        <ol>
+          <li>Browse public sets in Public Library.</li>
+          <li>Create your own sets in Create Flashcards.</li>
+          <li>Study with flip cards and track known/revision progress.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="library" class="panel" aria-labelledby="library-title">
+      <h2 id="library-title">Public Library</h2>
+      <p class="muted">Public sets are read-only and stored in PublicLibrary JSON files.</p>
+      <div class="list" id="publicSetsList"></div>
+    </section>
+
+    <section id="myFlashcards" class="panel" aria-labelledby="my-title">
+      <h2 id="my-title">My Flashcards</h2>
+      <div class="toolbar">
+        <label for="searchInput">Search</label>
+        <input id="searchInput" type="search" placeholder="Search title, subject, or card text" />
+      </div>
+      <div class="list" id="mySetsList"></div>
+    </section>
+
+    <section id="create" class="panel" aria-labelledby="create-title">
+      <h2 id="create-title">Create Flashcards</h2>
+      <form id="setForm" class="form">
+        <div class="grid two-col">
+          <label>Title
+            <input type="text" id="setTitle" maxlength="100" required />
+          </label>
+          <label>Subject
+            <input type="text" id="setSubject" maxlength="80" required />
+          </label>
+          <label>Year Level
+            <input type="text" id="setYear" maxlength="50" required />
+          </label>
+          <label>Description
+            <input type="text" id="setDescription" maxlength="250" required />
+          </label>
+        </div>
+
+        <div class="row between">
+          <h3>Cards</h3>
+          <button type="button" id="addCardBtn" class="btn secondary">Add Card</button>
+        </div>
+
+        <div id="cardInputs" class="stack"></div>
+
+        <div class="row gap">
+          <button type="submit" class="btn">Save Set</button>
+          <button type="button" id="cancelEditBtn" class="btn secondary hidden">Cancel Edit</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="import" class="panel" aria-labelledby="import-title">
+      <h2 id="import-title">Import JSON</h2>
+      <div class="card panel-soft">
+        <p class="warning-text">Warning: import only trusted JSON files. Imported content is validated and sanitised before saving.</p>
+        <label for="importFile">Select JSON File (max 1 MB)</label>
+        <input type="file" id="importFile" accept=".json,application/json" />
+        <button id="previewImportBtn" class="btn" type="button">Preview Import</button>
+      </div>
+      <div id="importPreview" class="card hidden" aria-live="polite">
+        <h3>Import Preview</h3>
+        <div id="importPreviewContent"></div>
+        <button id="confirmImportBtn" class="btn" type="button">Confirm and Import</button>
+      </div>
+    </section>
+
+    <section id="export" class="panel" aria-labelledby="export-title">
+      <h2 id="export-title">Export JSON</h2>
+      <div class="card panel-soft">
+        <label for="exportSelect">Choose Set</label>
+        <select id="exportSelect"></select>
+        <div class="row gap">
+          <button id="exportBtn" class="btn" type="button">Export Selected</button>
+          <button id="exportAllBtn" class="btn secondary" type="button">Export All My Sets</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="statistics" class="panel" aria-labelledby="stats-title">
+      <h2 id="stats-title">Statistics</h2>
+      <div class="stat-grid" id="statisticsGrid"></div>
+      <div class="card panel-soft">
+        <h3>Progress by Set</h3>
+        <div id="setProgressList"></div>
+      </div>
+    </section>
+
+    <section id="settings" class="panel" aria-labelledby="settings-title">
+      <h2 id="settings-title">Settings</h2>
+      <div class="card panel-soft form">
+        <label for="studentName">Student Name (optional)
+          <input type="text" id="studentName" maxlength="60" />
+        </label>
+        <label for="defaultMode">Default Study Mode
+          <select id="defaultMode">
+            <option value="study">Study Mode</option>
+            <option value="review">Review Mode</option>
+          </select>
+        </label>
+        <div class="row gap">
+          <button id="saveSettingsBtn" class="btn" type="button">Save Settings</button>
+          <button id="resetProgressBtn" class="btn secondary" type="button">Reset Progress</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside id="studyModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="study-title">
+    <div class="modal-content">
+      <div class="row between">
+        <h2 id="study-title">Study Session</h2>
+        <button id="closeStudyBtn" class="btn secondary" type="button">Close</button>
+      </div>
+
+      <div class="row wrap gap">
+        <label for="studyMode">Mode</label>
+        <select id="studyMode">
+          <option value="study">Study</option>
+          <option value="review">Review</option>
+        </select>
+      </div>
+
+      <p id="studyMeta" class="muted"></p>
+      <div id="progressBarWrap" class="progress-wrap" aria-label="Study Progress">
+        <div id="progressBar" class="progress-fill"></div>
+      </div>
+
+      <button id="flipCardBtn" class="flashcard" type="button" aria-label="Flip card">
+        <span id="flashcardFace" class="face front"></span>
+      </button>
+
+      <div class="row wrap gap center">
+        <button id="prevCardBtn" class="btn secondary" type="button">Previous</button>
+        <button id="nextCardBtn" class="btn secondary" type="button">Next</button>
+        <button id="shuffleBtn" class="btn secondary" type="button">Shuffle</button>
+        <button id="restartBtn" class="btn secondary" type="button">Restart</button>
+        <button id="knownBtn" class="btn" type="button">Mark as Known</button>
+        <button id="revisionBtn" class="btn warn" type="button">Needs Revision</button>
+      </div>
+    </div>
+  </aside>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

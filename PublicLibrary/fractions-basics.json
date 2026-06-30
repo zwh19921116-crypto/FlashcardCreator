@@ -1,0 +1,48 @@
+{
+  "title": "Fractions Basics",
+  "subject": "Mathematics",
+  "yearLevel": "Year 5",
+  "description": "Introduction to fractions",
+  "cards": [
+    {
+      "id": 1,
+      "front": "What is a numerator?",
+      "back": "The top number in a fraction."
+    },
+    {
+      "id": 2,
+      "front": "What is a denominator?",
+      "back": "The bottom number in a fraction."
+    },
+    {
+      "id": 3,
+      "front": "What are equivalent fractions?",
+      "back": "Fractions that represent the same value, like 1/2 and 2/4."
+    },
+    {
+      "id": 4,
+      "front": "How do you simplify a fraction?",
+      "back": "Divide numerator and denominator by their greatest common factor."
+    },
+    {
+      "id": 5,
+      "front": "What is the lowest common multiple used for in fractions?",
+      "back": "To find a common denominator when adding or subtracting fractions."
+    },
+    {
+      "id": 6,
+      "front": "Add: 1/4 + 2/4",
+      "back": "3/4"
+    },
+    {
+      "id": 7,
+      "front": "Subtract: 5/6 - 1/6",
+      "back": "4/6, which simplifies to 2/3."
+    },
+    {
+      "id": 8,
+      "front": "Write 3/9 in simplest form.",
+      "back": "1/3"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "title": "Science Forces",
+  "subject": "Science",
+  "yearLevel": "Year 8",
+  "description": "Understanding contact and non-contact forces",
+  "cards": [
+    {
+      "id": 1,
+      "front": "What is a force?",
+      "back": "A push or pull that can change motion."
+    },
+    {
+      "id": 2,
+      "front": "What does gravity do?",
+      "back": "It pulls objects toward Earth."
+    },
+    {
+      "id": 3,
+      "front": "What is friction?",
+      "back": "A force that opposes movement between touching surfaces."
+    },
+    {
+      "id": 4,
+      "front": "Give an example of a push force.",
+      "back": "Pushing a trolley or closing a door."
+    },
+    {
+      "id": 5,
+      "front": "Give an example of a pull force.",
+      "back": "Pulling a drawer open."
+    },
+    {
+      "id": 6,
+      "front": "What are balanced forces?",
+      "back": "Equal forces in opposite directions causing no change in motion."
+    },
+    {
+      "id": 7,
+      "front": "What are unbalanced forces?",
+      "back": "Forces that are unequal, causing acceleration or direction change."
+    },
+    {
+      "id": 8,
+      "front": "How can force affect motion?",
+      "back": "A net force can start, stop, speed up, slow down, or turn an object."
+    }
+  ]
+}
