@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EdgEducate Flashcard Creator</title>
+  <title>EdgEducate Study Packs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -14,107 +14,122 @@
     <div class="brand-wrap">
       <div class="brand-mark" aria-hidden="true">EE</div>
       <div>
-        <h1>EdgEducate Flashcard Creator</h1>
-        <p class="subhead">Interactive flashcards for primary, secondary, and VCE learners</p>
+        <h1>EdgEducate Study Packs</h1>
+        <p class="subhead">Organise flashcards by category and study by deck</p>
       </div>
     </div>
   </header>
 
-  <nav class="main-nav" aria-label="Primary navigation">
-    <button class="nav-btn active" data-section="dashboard">Dashboard</button>
-    <button class="nav-btn" data-section="library">Public Library</button>
-    <button class="nav-btn" data-section="myFlashcards">My Flashcards</button>
-    <button class="nav-btn" data-section="create">Create Flashcards</button>
-    <button class="nav-btn" data-section="import">Import JSON</button>
-    <button class="nav-btn" data-section="export">Export JSON</button>
-    <button class="nav-btn" data-section="statistics">Statistics</button>
-    <button class="nav-btn" data-section="settings">Settings</button>
-  </nav>
+  <div class="app-shell">
+    <nav class="main-nav" aria-label="Primary navigation">
+      <button class="nav-btn active" data-section="dashboard">Dashboard</button>
+      <button class="nav-btn" data-section="library">Public Decks</button>
+      <button class="nav-btn" data-section="myFlashcards">My Decks</button>
+      <button class="nav-btn" data-section="statistics">Statistics</button>
+      <button class="nav-btn" data-section="export">Import/Export</button>
+    </nav>
 
-  <main class="container">
+    <main class="container">
     <section id="dashboard" class="panel active" aria-labelledby="dashboard-title">
       <h2 id="dashboard-title">Dashboard</h2>
+      <p id="dashboardImportNotice" class="import-notice hidden" aria-live="polite"></p>
       <div class="stat-grid" id="dashboardStats"></div>
       <div class="card panel-soft">
         <h3>Quick Start</h3>
         <ol>
-          <li>Browse public sets in Public Library.</li>
-          <li>Create your own sets in Create Flashcards.</li>
+          <li>Create your own deck and assign it to a category.</li>
+          <li>Import your flashcard files or start from scratch.</li>
           <li>Study with flip cards and track known/revision progress.</li>
         </ol>
       </div>
     </section>
 
     <section id="library" class="panel" aria-labelledby="library-title">
-      <h2 id="library-title">Public Library</h2>
-      <p class="muted">Public sets are read-only and stored in PublicLibrary JSON files.</p>
+      <h2 id="library-title">Public Decks</h2>
+      <p class="muted">Read-only for students. Public decks are managed by admin via PublicLibrary JSON files.</p>
       <div class="list" id="publicSetsList"></div>
     </section>
 
     <section id="myFlashcards" class="panel" aria-labelledby="my-title">
-      <h2 id="my-title">My Flashcards</h2>
+      <h2 id="my-title">My Decks</h2>
+      <div class="row wrap gap mydeck-actions">
+        <button id="myCreateBtn" type="button" class="btn">Create Deck</button>
+        <button id="myImportBtn" type="button" class="btn secondary">Import Flashcard Files</button>
+        <button id="myExportBtn" type="button" class="btn secondary">Export Flashcard Files</button>
+      </div>
       <div class="toolbar">
         <label for="searchInput">Search</label>
-        <input id="searchInput" type="search" placeholder="Search title, subject, or card text" />
+        <input id="searchInput" type="search" placeholder="Search deck, category, subject, or card text" />
+        <label for="packFilter">Category</label>
+        <select id="packFilter">
+          <option value="all">All Categories</option>
+        </select>
       </div>
       <div class="list" id="mySetsList"></div>
     </section>
 
     <section id="create" class="panel" aria-labelledby="create-title">
-      <h2 id="create-title">Create Flashcards</h2>
+      <h2 id="create-title">Create Deck</h2>
+      <p class="muted">Design each flashcard directly on the card faces below, then save your deck.</p>
       <form id="setForm" class="form">
         <div class="grid two-col">
-          <label>Title
+          <label>Deck Title
             <input type="text" id="setTitle" maxlength="100" required />
           </label>
+          <label>Category
+            <input type="text" id="setPack" maxlength="80" required />
+          </label>
           <label>Subject
-            <input type="text" id="setSubject" maxlength="80" required />
+            <input type="text" id="setSubject" maxlength="80" />
           </label>
           <label>Year Level
-            <input type="text" id="setYear" maxlength="50" required />
+            <input type="text" id="setYear" maxlength="50" />
           </label>
           <label>Description
-            <input type="text" id="setDescription" maxlength="250" required />
+            <input type="text" id="setDescription" maxlength="250" />
           </label>
         </div>
 
         <div class="row between">
-          <h3>Cards</h3>
-          <button type="button" id="addCardBtn" class="btn secondary">Add Card</button>
+          <h3>Flashcards</h3>
+          <button type="button" id="addCardBtn" class="btn secondary">Add New Card</button>
         </div>
 
         <div id="cardInputs" class="stack"></div>
 
         <div class="row gap">
-          <button type="submit" class="btn">Save Set</button>
+          <button type="submit" class="btn">Save Deck</button>
           <button type="button" id="cancelEditBtn" class="btn secondary hidden">Cancel Edit</button>
         </div>
       </form>
     </section>
 
     <section id="import" class="panel" aria-labelledby="import-title">
-      <h2 id="import-title">Import JSON</h2>
+      <h2 id="import-title">Import Flashcard Files</h2>
       <div class="card panel-soft">
-        <p class="warning-text">Warning: import only trusted JSON files. Imported content is validated and sanitised before saving.</p>
-        <label for="importFile">Select JSON File (max 1 MB)</label>
-        <input type="file" id="importFile" accept=".json,application/json" />
-        <button id="previewImportBtn" class="btn" type="button">Preview Import</button>
-      </div>
-      <div id="importPreview" class="card hidden" aria-live="polite">
-        <h3>Import Preview</h3>
-        <div id="importPreviewContent"></div>
-        <button id="confirmImportBtn" class="btn" type="button">Confirm and Import</button>
+        <p class="warning-text">Use the import popup to load your personalised study library or a single deck file.</p>
+        <button id="openImportModalBtn" class="btn" type="button">Open Import Popup</button>
       </div>
     </section>
 
     <section id="export" class="panel" aria-labelledby="export-title">
-      <h2 id="export-title">Export JSON</h2>
+      <h2 id="export-title">Import/Export Full Library</h2>
       <div class="card panel-soft">
-        <label for="exportSelect">Choose Set</label>
-        <select id="exportSelect"></select>
+        <p class="warning-text">Import a full-library backup file (including cards, formulas, and attachments).</p>
         <div class="row gap">
-          <button id="exportBtn" class="btn" type="button">Export Selected</button>
-          <button id="exportAllBtn" class="btn secondary" type="button">Export All My Sets</button>
+          <button id="openImportFromExportBtn" class="btn" type="button">Import Full Library</button>
+        </div>
+      </div>
+      <div class="card panel-soft">
+        <p class="muted">Export your full personal library (all decks, all cards, and image attachments) as one backup file.</p>
+        <div class="row gap">
+          <button id="exportAllBtn" class="btn" type="button">Export My Full Library</button>
+        </div>
+      </div>
+      <div class="card panel-soft">
+        <p class="warning-text">Need a blank start? Clear all your current data before importing.</p>
+        <div class="row gap">
+          <button id="clearLibraryBtn" class="btn warn" type="button">Clear Everything</button>
         </div>
       </div>
     </section>
@@ -122,8 +137,12 @@
     <section id="statistics" class="panel" aria-labelledby="stats-title">
       <h2 id="stats-title">Statistics</h2>
       <div class="stat-grid" id="statisticsGrid"></div>
+      <div class="card panel-soft" id="statsFilterPanel">
+        <h3 id="statsFilterTitle">Card Filter Results</h3>
+        <div id="statsFilterList"></div>
+      </div>
       <div class="card panel-soft">
-        <h3>Progress by Set</h3>
+        <h3>Progress by Deck</h3>
         <div id="setProgressList"></div>
       </div>
     </section>
@@ -146,7 +165,8 @@
         </div>
       </div>
     </section>
-  </main>
+    </main>
+  </div>
 
   <aside id="studyModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="study-title">
     <div class="modal-content">
@@ -168,17 +188,40 @@
         <div id="progressBar" class="progress-fill"></div>
       </div>
 
-      <button id="flipCardBtn" class="flashcard" type="button" aria-label="Flip card">
-        <span id="flashcardFace" class="face front"></span>
-      </button>
+      <div class="study-card-wrap">
+        <button id="prevCardBtn" class="study-arrow" type="button" aria-label="Previous card">◀</button>
+        <button id="flipCardBtn" class="flashcard" type="button" aria-label="Flip card">
+          <span id="flashcardFace" class="face front"></span>
+        </button>
+        <button id="nextCardBtn" class="study-arrow" type="button" aria-label="Next card">▶</button>
+      </div>
 
       <div class="row wrap gap center">
-        <button id="prevCardBtn" class="btn secondary" type="button">Previous</button>
-        <button id="nextCardBtn" class="btn secondary" type="button">Next</button>
         <button id="shuffleBtn" class="btn secondary" type="button">Shuffle</button>
         <button id="restartBtn" class="btn secondary" type="button">Restart</button>
+        <button id="printCurrentBtn" class="btn secondary" type="button">Print Cards</button>
         <button id="knownBtn" class="btn" type="button">Mark as Known</button>
         <button id="revisionBtn" class="btn warn" type="button">Needs Revision</button>
+      </div>
+    </div>
+  </aside>
+
+  <aside id="importModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="import-modal-title">
+    <div class="modal-content">
+      <div class="row between">
+        <h2 id="import-modal-title">Import Flashcard Files</h2>
+        <button id="closeImportBtn" class="btn secondary" type="button">Close</button>
+      </div>
+      <div class="card panel-soft">
+        <p class="warning-text">Import your full study library backup. Only .edgefc (or legacy .json) files up to 15 MB are accepted.</p>
+        <label for="importFile">Select Flashcard File</label>
+        <input type="file" id="importFile" accept=".edgefc,.json,application/json" />
+        <button id="previewImportBtn" class="btn" type="button">Preview Import</button>
+      </div>
+      <div id="importPreview" class="card hidden" aria-live="polite">
+        <h3>Import Preview</h3>
+        <div id="importPreviewContent"></div>
+        <button id="confirmImportBtn" class="btn" type="button">Confirm and Import</button>
       </div>
     </div>
   </aside>
