@@ -1084,16 +1084,23 @@
       return;
     }
 
+    if (isPublicLibraryDeck(set)) {
+      showToast("Public library decks are not included in exports.");
+      return;
+    }
+
     downloadJSON(cleanSetForExport(set), `${safeFilename(set.title)}.json`);
   }
 
   function onExportAll() {
-    if (state.userSets.length === 0) {
+    const exportableSets = state.userSets.filter((set) => !isPublicLibraryDeck(set));
+
+    if (exportableSets.length === 0) {
       showToast("No user decks to export.");
       return;
     }
 
-    const all = state.userSets.map((set) => cleanSetForExport(set));
+    const all = exportableSets.map((set) => cleanSetForExport(set));
     const payload = {
       format: "edgeducate-full-library",
       version: 2,
@@ -1104,6 +1111,26 @@
     };
     const owner = state.settings.studentName ? safeFilename(state.settings.studentName) : "student";
     downloadJSON(payload, `${owner}-study-library.edgefc`);
+  }
+
+  function isPublicLibraryDeck(set) {
+    if (!set || typeof set !== "object") {
+      return false;
+    }
+
+    if (set.isPublic === true) {
+      return true;
+    }
+
+    if (typeof set.source === "string" && set.source.startsWith("PublicLibrary/")) {
+      return true;
+    }
+
+    if (typeof set.internalId === "string" && set.internalId.startsWith("public_")) {
+      return true;
+    }
+
+    return false;
   }
 
   function onClearLibrary() {
@@ -1179,12 +1206,14 @@
 
     el.exportSelect.textContent = "";
 
+    const exportableSets = state.userSets.filter((set) => !isPublicLibraryDeck(set));
+
     const placeholder = document.createElement("option");
     placeholder.value = "none";
-    placeholder.textContent = state.userSets.length ? "Select a deck" : "No decks available";
+    placeholder.textContent = exportableSets.length ? "Select a deck" : "No decks available";
     el.exportSelect.appendChild(placeholder);
 
-    state.userSets.forEach((set) => {
+    exportableSets.forEach((set) => {
       const opt = document.createElement("option");
       opt.value = set.internalId;
       opt.textContent = `${set.title} (${set.pack})`;
