@@ -1,6 +1,10 @@
 (() => {
   "use strict";
 
+  // Resolve asset URLs from the script location so subpath hosting works
+  // even when the app is visited without a trailing slash.
+  const APP_BASE_URL = new URL(".", document.currentScript?.src || window.location.href);
+
   const STORAGE_KEYS = {
     sets: "edgeducate_flashcards_sets",
     progress: "edgeducate_flashcards_progress",
@@ -282,7 +286,7 @@
     const loaded = [];
 
     for (const item of PUBLIC_MANIFEST) {
-      const path = `PublicLibrary/${item.filename}`;
+      const path = new URL(`PublicLibrary/${item.filename}`, APP_BASE_URL).toString();
       let data = null;
 
       try {
